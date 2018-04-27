@@ -4,21 +4,21 @@ jobs:
   checkout_code:
     docker:
       - image: circleci/python:3.6.5
-    working_directory: ~/circleci-jsona
+    working_directory: ~/circleci-flask-app-core
     steps:
       - checkout
       - save_cache:
-          key: jsona-repo-{{ .Environment.CIRCLE_SHA1 }}
+          key: flask-app-core-repo-{{ .Environment.CIRCLE_SHA1 }}
           paths:
-            - ~/circleci-jsona
+            - ~/circleci-flask-app-core
   test_py36:
     docker:
       - image: circleci/python:3.6.5
       - image: redis:alpine
-    working_directory: ~/circleci-jsona
+    working_directory: ~/circleci-flask-app-core
     steps:
       - restore_cache:
-          key: jsona-repo-{{ .Environment.CIRCLE_SHA1 }}
+          key: flask-app-core-repo-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
           key: py36-tox-{{ .Branch }}-{{ checksum "requirements.txt" }}
       - run:
@@ -30,7 +30,7 @@ jobs:
       - save_cache:
           key: py36-tox-{{ .Branch }}-{{ checksum "requirements.txt" }}
           paths:
-            - "~/circleci-jsona/.tox"
+            - "~/circleci-flask-app-core/.tox"
       - store_test_results:
           path: .
 workflows:
