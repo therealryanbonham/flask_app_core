@@ -1,0 +1,43 @@
+version: 2.0
+
+jobs:
+  checkout_code:
+    docker:
+      - image: circleci/python:3.6.5
+    working_directory: ~/circleci-jsona
+    steps:
+      - checkout
+      - save_cache:
+          key: jsona-repo-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - ~/circleci-jsona
+  test_py36:
+    docker:
+      - image: circleci/python:3.6.5
+      - image: redis:alpine
+    working_directory: ~/circleci-jsona
+    steps:
+      - restore_cache:
+          key: jsona-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          key: py36-tox-{{ .Branch }}-{{ checksum "requirements.txt" }}
+      - run:
+          command: |
+            sudo apt-get install python-dev
+            sudo pip install tox
+      - run:
+          command: tox -e py36
+      - save_cache:
+          key: py36-tox-{{ .Branch }}-{{ checksum "requirements.txt" }}
+          paths:
+            - "~/circleci-jsona/.tox"
+      - store_test_results:
+          path: .
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - checkout_code
+      - test_py36:
+          requires:
+            - checkout_code

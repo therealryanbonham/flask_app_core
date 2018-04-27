@@ -16,7 +16,7 @@ class RedisPythonModuleMissing(Exception):
 class CustomSessionInterface(SecureCookieSessionInterface):
     """Prevent creating session from API requests."""
 
-    def save_session(self, *args, **kwargs):
+    def save_session(self, app, session, response):
         return
 
 

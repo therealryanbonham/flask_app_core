@@ -39,16 +39,17 @@ def fix_proxy(app):
 
 
 def enable_db(app):
-    from flask_sqlalchemy import SQLAlchemy
-    from aws_xray_sdk.ext.flask_sqlalchemy.query import XRayFlaskSqlAlchemy
     enable_database_url = os.environ.get('DATABASE_URL', False)
     enable_xray = os.environ.get('ENABLE_XRAY', False)
     if enable_database_url is not False:
+        from flask_sqlalchemy import SQLAlchemy
         app.config['SQLALCHEMY_DATABASE_URI'] = enable_database_url
         app.logger.debug('Connect to DB: {}'.format(enable_database_url))
         if enable_xray is not False:
+            from aws_xray_sdk.ext.flask_sqlalchemy.query import XRayFlaskSqlAlchemy
             return XRayFlaskSqlAlchemy(app)
         else:
+            from flask_sqlalchemy import SQLAlchemy
             return SQLAlchemy(app)
 
 
