@@ -62,7 +62,9 @@ def enable_track_modifications(app):
 
 
 def make_requests_editable(app):
-    app.request_class = TheRequest  # This is what actually effects the change of the form object's type
+    enable = os.environ.get('REQUEST_EDITABLE', False)
+    if enable is not False:
+        app.request_class = TheRequest  # This is what actually effects the change of the form object's type
 
 
 def enable_profiler(app):
@@ -83,3 +85,4 @@ class FlaskWrapper(object):
         set_flask_debug_toolbar(app)
         fix_proxy(app)
         enable_track_modifications(app)
+        make_requests_editable(app)
