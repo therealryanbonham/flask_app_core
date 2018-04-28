@@ -12,7 +12,7 @@ class BaseTest(unittest.TestCase):
     cache = None
 
     def setUp(self):
-        os.environ['SECRET_KEY'] = secrets.token_hex(16)  
+        os.environ['SECRET_KEY'] = secrets.token_hex(16)
         self.app = Flask(__name__)
         FlaskWrapper('Test', self.app)
         # self.client = self.app.test_client()

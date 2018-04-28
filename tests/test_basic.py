@@ -7,12 +7,12 @@ class SessionTests(object):
 
     def test_session(self):
         @self.app.route('/set', methods=['POST'])
-        def set():
+        def set_session():
             flask.session['value'] = flask.request.form['value']
             return 'value set'
 
         @self.app.route('/get')
-        def get():
+        def get_session():
             v = flask.session.get('value', 'None')
             return v
         self.app.config.update(
@@ -32,7 +32,8 @@ class FileSessionTests(BaseTest, SessionTests):
         os.environ['SESSION_TYPE'] = 'filesystem'
         super().setUp()
 
-class FileSessionTests(BaseTest, SessionTests):
+
+class RedisSessionTests(BaseTest, SessionTests):
 
     def setUp(self):
         os.environ['SESSION_TYPE'] = 'redis'
@@ -48,12 +49,12 @@ class NoneSessionTests(BaseTest, SessionTests):
 
     def test_session(self):
         @self.app.route('/set', methods=['POST'])
-        def set():
+        def set_session():
             flask.session['value'] = flask.request.form['value']
             return 'value set'
 
         @self.app.route('/get')
-        def get():
+        def get_session():
             v = flask.session.get('value', 'None')
             return v
         self.app.config.update(
