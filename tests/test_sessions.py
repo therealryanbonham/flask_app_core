@@ -20,10 +20,10 @@ class SessionTests(object):
         )
         with self.app.test_client() as client:
             r = client.post('/set', data={'value': '42'})
-            assert r.data == b'value set'
-            assert 'domain=.example.com' in r.headers['set-cookie'].lower()
-            assert 'httponly' in r.headers['set-cookie'].lower()
-            assert client.get('/get').data == b'42'
+            self.assertEquals(r.data, b'value set')
+            self.assertIn('domain=.example.com', r.headers['set-cookie'].lower())
+            self.assertIn('httponly', r.headers['set-cookie'].lower())
+            self.assertEquals(client.get('/get').data, b'42')
 
 
 class FileSessionTests(BaseTest, SessionTests):
@@ -62,6 +62,6 @@ class NoneSessionTests(BaseTest, SessionTests):
         )
         with self.app.test_client() as client:
             r = client.post('/set', data={'value': '42'})
-            assert r.data == b'value set'
-            assert 'set-cookie' not in r.headers
-            assert client.get('/get').data == b'None'
+            self.assertEquals(r.data, b'value set')
+            self.assertNotIn('set-cookie', r.headers)
+            self.assertEquals(client.get('/get').data, b'None')
