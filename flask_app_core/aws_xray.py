@@ -6,10 +6,12 @@ from aws_xray_sdk.core import xray_recorder, patch_all
 
 
 def enable_xray(name, app):
-    enable_xray = os.environ.get('ENABLE_XRAY', False)
+    enable_xray = os.environ.get("ENABLE_XRAY", False)
     if enable_xray is not False:
         # Initialize xray
         patch_all()
-        xray_recorder.configure(service=name, sampling=False, context=Context(), context_missing='LOG_ERROR')
+        xray_recorder.configure(
+            service=name, sampling=False, context=Context(), context_missing="LOG_ERROR"
+        )
         XRayMiddleware(app, xray_recorder)
-        logging.getLogger('aws_xray_sdk').setLevel(logging.ERROR)
+        logging.getLogger("aws_xray_sdk").setLevel(logging.ERROR)
