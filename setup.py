@@ -12,7 +12,13 @@ setup(
     description='Flask Wrapper to setup Flask, and some common Flask Extension via Environtment Variables .',
     url='https://github.com/TransparentTechnologies/flask_app_core',
     install_requires=[
-        'Flask>=0.12.0'
+        'Flask~=1.0.2',
+        'aws-xray-sdk~=2.2.0',
+        'Flask-SQLAlchemy~=2.3.2',
+        'flask-debugtoolbar~=0.10.1',
+        'Flask-Sessionstore~=0.4.5',
+        'boto3~=1.9.57',
+        'redis~=3.0.1'
     ],
     extras_require={
         'Flask-SQLAlchemy':  ["Flask-SQLAlchemy>=2.3.0"],
